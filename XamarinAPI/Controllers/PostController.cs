@@ -44,5 +44,20 @@ namespace XamarinAPI.Controllers
 
             return list;
         }
+        [HttpPost]
+        public int Post([FromBody] PostModel model)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=RANA\SQLEXPRESS;Initial Catalog=XamarinDB;Integrated Security=True");
+            con.Open();
+            string inserSQL = "insert into Post(UserId,Title,Description)values(@UserID,@Title,@Desc)";
+            SqlCommand cmd= new SqlCommand(inserSQL, con);
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@UserID", model.UserId);
+            cmd.Parameters.AddWithValue("@Title", model.Title);
+            cmd.Parameters.AddWithValue("@Desc", model.Description);
+            int result = cmd.ExecuteNonQuery();
+            return result;
+
+        }
     }
 }
